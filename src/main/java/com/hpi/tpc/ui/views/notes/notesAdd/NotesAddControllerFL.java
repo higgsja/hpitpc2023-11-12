@@ -38,7 +38,7 @@ public class NotesAddControllerFL
 
     @Autowired private NotesModel notesModel;
     @Autowired private TPCDAOImpl serviceTPC;
-    @Autowired private NotesEditFormVL notesAddFormVL;
+    @Autowired private NotesAddFormVL notesAddFormVL;
 
     public NotesAddControllerFL()
     {
