@@ -21,7 +21,7 @@ public class TitleBaseVL
     
     public TitleBaseVL(String title){
         this();
-        this.title = "";
+//        this.title = "";
         this.setTitle(title);
     }
     

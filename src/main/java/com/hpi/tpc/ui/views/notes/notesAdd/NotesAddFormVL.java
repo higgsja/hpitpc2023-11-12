@@ -26,12 +26,14 @@ public class NotesAddFormVL
     @PostConstruct
     private void construct()
     {
-        super.buildForm("Edit a note ...");
+        super.buildForm("Add a note ...");
     }
 
     @Override
     public void doLayout()
     {
         super.doLayout();
+        
+        this.getControlsHL().getButtonAddArchive().setEnabled(false);
     }
 }

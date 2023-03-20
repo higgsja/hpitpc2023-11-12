@@ -3,7 +3,6 @@ package com.hpi.tpc.ui.views.notes.notesAddEdit;
 import com.hpi.tpc.ui.views.notes.NotesAddEditFormTitleVL;
 import com.hpi.tpc.ui.views.notes.NotesAddEditControlsHL;
 import com.hpi.tpc.data.entities.*;
-import com.hpi.tpc.ui.views.notes.notesAdd.*;
 import com.hpi.tpc.ui.views.baseClass.*;
 import com.hpi.tpc.ui.views.notes.*;
 import com.studerw.tda.model.quote.*;
@@ -14,7 +13,6 @@ import com.vaadin.flow.data.binder.*;
 import com.vaadin.flow.data.value.*;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.*;
-import javax.annotation.*;
 import lombok.*;
 import org.springframework.beans.factory.annotation.*;
 
@@ -45,6 +43,8 @@ public abstract class NotesAddEditFormAbstractVL
     @Getter private final TextArea notes;
 
     @Getter private final NotesAddEditControlsHL controlsHL;
+
+    private Boolean inPrice = false;
 
     public NotesAddEditFormAbstractVL()
     {
@@ -78,10 +78,68 @@ public abstract class NotesAddEditFormAbstractVL
 
     private Boolean checkRequired()
     {
-        return (!this.ticker.getValue().isEmpty()
-            && !((EquityQuote) (this.notesModel.getQuote())).getSymbol().isEmpty()
-            && ((EquityQuote) (this.notesModel.getQuote())).getMark().doubleValue() > 0.0
-            && !((EquityQuote) (this.notesModel.getQuote())).getDescription().isEmpty());
+        if (!this.ticker.getValue().isEmpty()
+            && !this.notesModel.getQuote().getSymbol().isEmpty()
+            && !this.notesModel.getQuote().getDescription().isEmpty())
+        {
+            if (this.notesModel.getQuote() instanceof ForexQuote)
+            {
+                if (((ForexQuote) (this.notesModel.getQuote())).getLastPriceInDouble().doubleValue() > 0.0)
+                {
+                    return true;
+                }
+            }
+            
+            if (this.notesModel.getQuote() instanceof FutureOptionQuote)
+            {
+                if (((FutureOptionQuote) (this.notesModel.getQuote())).getLastPriceInDouble().doubleValue() > 0.0)
+                {
+                    return true;
+                }
+            }
+            
+            if (this.notesModel.getQuote() instanceof FutureQuote)
+            {
+                if (((FutureQuote) (this.notesModel.getQuote())).getLastPriceInDouble().doubleValue() > 0.0)
+                {
+                    return true;
+                }
+            }
+
+            if (this.notesModel.getQuote() instanceof OptionQuote)
+            {
+                if (((OptionQuote) (this.notesModel.getQuote())).getLastPrice().doubleValue() > 0.0)
+                {
+                    return true;
+                }
+            }
+            
+            if (this.notesModel.getQuote() instanceof EquityQuote)
+            {
+                if (((EquityQuote) (this.notesModel.getQuote())).getLastPrice().doubleValue() > 0.0)
+                {
+                    return true;
+                }
+            }
+            
+            if (this.notesModel.getQuote() instanceof EtfQuote)
+            {
+                if (((EtfQuote) (this.notesModel.getQuote())).getLastPrice().doubleValue() > 0.0)
+                {
+                    return true;
+                }
+            }
+
+            if (this.notesModel.getQuote() instanceof MutualFundQuote)
+            {
+                if (((MutualFundQuote) (this.notesModel.getQuote())).getClosePrice().doubleValue() > 0.0)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public void doLayout()
@@ -94,12 +152,22 @@ public abstract class NotesAddEditFormAbstractVL
         this.notesModel.getBinder().forField(this.ticker)
             .withValidator(e ->
             {
+                Quote quote;
                 EquityQuote equityQuote;
-                
-                if (this.notesModel.getIsSave()){
+                EtfQuote etfQuote;
+
+                if (this.notesModel.getIsSave())
+                {
                     //on save, we reset the ticker to empty 
                     //do not want that to show as an error
 //                    this.notesModel.setIsSave(false);
+                    return true;
+                }
+
+                //setting other values here causes repeat validations
+                //and repeated calls for a quote
+                if (this.inPrice)
+                {
                     return true;
                 }
 
@@ -117,7 +185,7 @@ public abstract class NotesAddEditFormAbstractVL
 
                 try
                 {
-                    equityQuote = (EquityQuote) this.notesModel.getTickerInfo(this.ticker.getValue());
+                    quote = this.notesModel.getTickerInfo(this.ticker.getValue());
                 } catch (RuntimeException f)
                 {
                     this.controlsHL.getButtonAddSave().setEnabled(false);
@@ -125,22 +193,83 @@ public abstract class NotesAddEditFormAbstractVL
                     return false;
                 }
 
-                if (equityQuote != null)
+                //if (equityQuote != null)
+                if (quote != null)
                 {
-                    //setting other values here causes repeat validations
-                    //and repeated calls for a quote
-                    this.iPrice.setValue((equityQuote.getLastPrice()).doubleValue());
-                    this.description.setValue(equityQuote.getDescription());
+                    this.inPrice = true;
+
+                    //clear data related to previous ticker
+                    this.iPrice.setValue(0.0);
+                    this.description.setValue("");
+
+                    if (quote instanceof EquityQuote equityQuote1)
+                    {
+
+                        this.iPrice.setValue((equityQuote1.getLastPrice()).doubleValue());
+                        this.description.setValue(equityQuote1.getDescription());
+                    }
+
+                    if (quote instanceof EtfQuote etfQuote1)
+                    {
+
+                        this.iPrice.setValue((etfQuote1.getLastPrice()).doubleValue());
+                        this.description.setValue(etfQuote1.getDescription());
+                    }
+
+                    if (quote instanceof MutualFundQuote mfQuote1)
+                    {
+
+                        this.iPrice.setValue((mfQuote1.getClosePrice()).doubleValue());
+                        this.description.setValue(mfQuote1.getDescription());
+                    }
+
+                    if (quote instanceof IndexQuote idxQuote1)
+                    {
+
+                        this.iPrice.setValue((idxQuote1.getLastPrice()).doubleValue());
+                        this.description.setValue(idxQuote1.getDescription());
+                    }
+
+                    if (quote instanceof FutureQuote futureQuote1)
+                    {
+
+                        this.iPrice.setValue((futureQuote1.getLastPriceInDouble()).doubleValue());
+                        this.description.setValue(futureQuote1.getDescription());
+                    }
+
+                    if (quote instanceof FutureOptionQuote futureOptionQuote1)
+                    {
+
+                        this.iPrice.setValue((futureOptionQuote1.getLastPriceInDouble()).doubleValue());
+                        this.description.setValue(futureOptionQuote1.getDescription());
+                    }
+
+                    if (quote instanceof ForexQuote forexQuote1)
+                    {
+
+                        this.iPrice.setValue((forexQuote1.getLastPriceInDouble()).doubleValue());
+                        this.description.setValue(forexQuote1.getDescription());
+                    }
+
+//                    this.iPrice.setValue((equityQuote.getLastPrice()).doubleValue());
+//                    this.description.setValue(equityQuote.getDescription());
                     if (this.checkRequired())
                     {
                         this.controlsHL.getButtonAddSave().setEnabled(true);
+
+                        //reset
+                        this.inPrice = false;
                         return true;
                     }
                 } else
                 {
+                    //reset
+                    this.inPrice = false;
                     return false;
                 }
-                
+
+                //reset
+                this.inPrice = false;
                 return false;
             }, "Invalid", ErrorLevel.ERROR)
             .bind(NoteModel::getTicker, NoteModel::setTicker);
@@ -242,7 +371,6 @@ public abstract class NotesAddEditFormAbstractVL
 
         //title
 //        this.add(new NotesAddFormTitleVL("Add a note ..."));
-
         //first row
         h1 = new HorizontalLayout(this.ticker, this.action);
         //second row
@@ -258,8 +386,9 @@ public abstract class NotesAddEditFormAbstractVL
 
         this.add(this.controlsHL);
     }
-    
-    public void buildForm(String formTitle){
+
+    public void buildForm(String formTitle)
+    {
         //title
         this.add(new NotesAddEditFormTitleVL(formTitle));
 
