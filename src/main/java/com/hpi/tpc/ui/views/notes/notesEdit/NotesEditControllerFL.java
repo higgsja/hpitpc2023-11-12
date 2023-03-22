@@ -88,6 +88,11 @@ public class NotesEditControllerFL
         this.notesEditFormVL.getControlsHL().getButtonAddCancel().addClickListener(e ->
         {
             //todo: return to correct list
+            //required to set the ticker to empty
+            this.notesModel.getNoteModel().setTicker("");
+            this.notesModel.getNoteModel().setDescription("");
+            this.notesModel.getNoteModel().setUnits(100.0);
+            this.notesModel.getNoteModel().setIPrice(0.0);
             UI.getCurrent().navigate(ROUTE_NOTES_CONTROLLER_MINE);
         });
 
@@ -108,6 +113,8 @@ public class NotesEditControllerFL
     public void beforeEnter(BeforeEnterEvent bee)
     {
         super.beforeEnter(bee);
+        
+        this.notesModel.setIsAdd(false);
 
         //log feature use
         this.serviceTPC.AppTracking("TPC:Notes:Edit:Controller");
@@ -119,13 +126,13 @@ public class NotesEditControllerFL
         this.notesEditFormVL.getIPrice().setEnabled(false);
 
         //initial button settings upon entry
-        this.notesEditFormVL.getControlsHL().getButtonAddSave().setVisible(true);
+//        this.notesEditFormVL.getControlsHL().getButtonAddSave().setVisible(true);
         this.notesEditFormVL.getControlsHL().getButtonAddSave().setEnabled(false);
 
-        this.notesEditFormVL.getControlsHL().getButtonAddCancel().setVisible(true);
+//        this.notesEditFormVL.getControlsHL().getButtonAddCancel().setVisible(true);
         this.notesEditFormVL.getControlsHL().getButtonAddCancel().setEnabled(true);
 
-        this.notesEditFormVL.getControlsHL().getButtonAddArchive().setVisible(true);
+//        this.notesEditFormVL.getControlsHL().getButtonAddArchive().setVisible(true);
         this.notesEditFormVL.getControlsHL().getButtonAddArchive().setEnabled(true);
 
         //refresh gear (none)

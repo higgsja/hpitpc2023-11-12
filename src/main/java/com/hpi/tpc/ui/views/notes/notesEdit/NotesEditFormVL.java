@@ -27,5 +27,8 @@ public class NotesEditFormVL
     @PostConstruct
     private void construct(){
         super.buildForm("Edit a note ...");
+        
+        this.getControlsHL().getButtonAddArchive().setEnabled(false);
+        this.getControlsHL().getButtonAddSave().setEnabled(false);
     }
 }

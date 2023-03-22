@@ -89,7 +89,7 @@ public abstract class NotesAddEditFormAbstractVL
                     return true;
                 }
             }
-            
+
             if (this.notesModel.getQuote() instanceof FutureOptionQuote)
             {
                 if (((FutureOptionQuote) (this.notesModel.getQuote())).getLastPriceInDouble().doubleValue() > 0.0)
@@ -97,7 +97,7 @@ public abstract class NotesAddEditFormAbstractVL
                     return true;
                 }
             }
-            
+
             if (this.notesModel.getQuote() instanceof FutureQuote)
             {
                 if (((FutureQuote) (this.notesModel.getQuote())).getLastPriceInDouble().doubleValue() > 0.0)
@@ -113,7 +113,7 @@ public abstract class NotesAddEditFormAbstractVL
                     return true;
                 }
             }
-            
+
             if (this.notesModel.getQuote() instanceof EquityQuote)
             {
                 if (((EquityQuote) (this.notesModel.getQuote())).getLastPrice().doubleValue() > 0.0)
@@ -121,7 +121,7 @@ public abstract class NotesAddEditFormAbstractVL
                     return true;
                 }
             }
-            
+
             if (this.notesModel.getQuote() instanceof EtfQuote)
             {
                 if (((EtfQuote) (this.notesModel.getQuote())).getLastPrice().doubleValue() > 0.0)
@@ -153,9 +153,7 @@ public abstract class NotesAddEditFormAbstractVL
             .withValidator(e ->
             {
                 Quote quote;
-                EquityQuote equityQuote;
-                EtfQuote etfQuote;
-
+                quote = null;
                 if (this.notesModel.getIsSave())
                 {
                     //on save, we reset the ticker to empty 
@@ -173,7 +171,7 @@ public abstract class NotesAddEditFormAbstractVL
 
                 if (this.ticker.getValue().isEmpty())
                 {
-                    //cannot do here as we get multiple fields marked invalid
+                    //cannot set iPrice here as we get multiple fields marked invalid
                     //and repeated validations
                     //client cannot save anyway
                     //this.iPrice.setValue(null);
@@ -183,6 +181,8 @@ public abstract class NotesAddEditFormAbstractVL
                     return false;
                 }
 
+                //only look for new quote on add; retain initial price on edit
+                //todo: this could fail on edit if the ticker no longer exists
                 try
                 {
                     quote = this.notesModel.getTickerInfo(this.ticker.getValue());
@@ -193,62 +193,64 @@ public abstract class NotesAddEditFormAbstractVL
                     return false;
                 }
 
-                //if (equityQuote != null)
                 if (quote != null)
                 {
                     this.inPrice = true;
 
-                    //clear data related to previous ticker
-                    this.iPrice.setValue(0.0);
-                    this.description.setValue("");
-
-                    if (quote instanceof EquityQuote equityQuote1)
+                    if (this.notesModel.getIsAdd())
                     {
+                        //only update these on Add, not Edit
+                        //clear data related to previous ticker
+                        this.iPrice.setValue(0.0);
+                        this.description.setValue("");
 
-                        this.iPrice.setValue((equityQuote1.getLastPrice()).doubleValue());
-                        this.description.setValue(equityQuote1.getDescription());
-                    }
+                        if (quote instanceof EquityQuote equityQuote1)
+                        {
+                            this.iPrice.setValue((equityQuote1.getLastPrice()).doubleValue());
+                            this.description.setValue(equityQuote1.getDescription());
+                        }
 
-                    if (quote instanceof EtfQuote etfQuote1)
-                    {
+                        if (quote instanceof EtfQuote etfQuote1)
+                        {
 
-                        this.iPrice.setValue((etfQuote1.getLastPrice()).doubleValue());
-                        this.description.setValue(etfQuote1.getDescription());
-                    }
+                            this.iPrice.setValue((etfQuote1.getLastPrice()).doubleValue());
+                            this.description.setValue(etfQuote1.getDescription());
+                        }
 
-                    if (quote instanceof MutualFundQuote mfQuote1)
-                    {
+                        if (quote instanceof MutualFundQuote mfQuote1)
+                        {
 
-                        this.iPrice.setValue((mfQuote1.getClosePrice()).doubleValue());
-                        this.description.setValue(mfQuote1.getDescription());
-                    }
+                            this.iPrice.setValue((mfQuote1.getClosePrice()).doubleValue());
+                            this.description.setValue(mfQuote1.getDescription());
+                        }
 
-                    if (quote instanceof IndexQuote idxQuote1)
-                    {
+                        if (quote instanceof IndexQuote idxQuote1)
+                        {
 
-                        this.iPrice.setValue((idxQuote1.getLastPrice()).doubleValue());
-                        this.description.setValue(idxQuote1.getDescription());
-                    }
+                            this.iPrice.setValue((idxQuote1.getLastPrice()).doubleValue());
+                            this.description.setValue(idxQuote1.getDescription());
+                        }
 
-                    if (quote instanceof FutureQuote futureQuote1)
-                    {
+                        if (quote instanceof FutureQuote futureQuote1)
+                        {
 
-                        this.iPrice.setValue((futureQuote1.getLastPriceInDouble()).doubleValue());
-                        this.description.setValue(futureQuote1.getDescription());
-                    }
+                            this.iPrice.setValue((futureQuote1.getLastPriceInDouble()).doubleValue());
+                            this.description.setValue(futureQuote1.getDescription());
+                        }
 
-                    if (quote instanceof FutureOptionQuote futureOptionQuote1)
-                    {
+                        if (quote instanceof FutureOptionQuote futureOptionQuote1)
+                        {
 
-                        this.iPrice.setValue((futureOptionQuote1.getLastPriceInDouble()).doubleValue());
-                        this.description.setValue(futureOptionQuote1.getDescription());
-                    }
+                            this.iPrice.setValue((futureOptionQuote1.getLastPriceInDouble()).doubleValue());
+                            this.description.setValue(futureOptionQuote1.getDescription());
+                        }
 
-                    if (quote instanceof ForexQuote forexQuote1)
-                    {
+                        if (quote instanceof ForexQuote forexQuote1)
+                        {
 
-                        this.iPrice.setValue((forexQuote1.getLastPriceInDouble()).doubleValue());
-                        this.description.setValue(forexQuote1.getDescription());
+                            this.iPrice.setValue((forexQuote1.getLastPriceInDouble()).doubleValue());
+                            this.description.setValue(forexQuote1.getDescription());
+                        }
                     }
 
 //                    this.iPrice.setValue((equityQuote.getLastPrice()).doubleValue());
@@ -257,19 +259,23 @@ public abstract class NotesAddEditFormAbstractVL
                     {
                         this.controlsHL.getButtonAddSave().setEnabled(true);
 
-                        //reset
+                        //reset to default
+                        this.notesModel.setIsAdd(false);
                         this.inPrice = false;
                         return true;
                     }
                 } else
                 {
-                    //reset
+                    //reset to default
+                    this.notesModel.setIsAdd(false);
                     this.inPrice = false;
                     return false;
                 }
 
-                //reset
+                //reset to default
+                this.notesModel.setIsAdd(false);
                 this.inPrice = false;
+
                 return false;
             }, "Invalid", ErrorLevel.ERROR)
             .bind(NoteModel::getTicker, NoteModel::setTicker);
@@ -399,14 +405,14 @@ public abstract class NotesAddEditFormAbstractVL
     public void beforeEnter(BeforeEnterEvent event)
     {
         //initial button settings upon entry
-        this.controlsHL.getButtonAddSave().setVisible(true);
-        this.controlsHL.getButtonAddSave().setEnabled(false);
-
-        this.controlsHL.getButtonAddCancel().setVisible(true);
-        this.controlsHL.getButtonAddCancel().setEnabled(true);
-        this.controlsHL.getButtonAddCancel().setText("Close");
-
-        this.controlsHL.getButtonAddArchive().setVisible(true);
-        this.controlsHL.getButtonAddArchive().setEnabled(true);
+////        this.controlsHL.getButtonAddSave().setVisible(true);
+//        this.controlsHL.getButtonAddSave().setEnabled(false);
+//
+////        this.controlsHL.getButtonAddCancel().setVisible(true);
+//        this.controlsHL.getButtonAddCancel().setEnabled(true);
+//        this.controlsHL.getButtonAddCancel().setText("Close");
+//
+////        this.controlsHL.getButtonAddArchive().setVisible(true);
+//        this.controlsHL.getButtonAddArchive().setEnabled(true);
     }
 }

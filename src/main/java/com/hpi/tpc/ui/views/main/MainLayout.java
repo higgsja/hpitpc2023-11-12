@@ -32,6 +32,7 @@ public class MainLayout
 
     @Autowired private TPCDAOImpl serviceTPC;
     @Autowired private MainDrawer mainDrawer;
+    @Autowired private NotesModel notesModel;
     @Autowired private PrefsController prefsController;
 
     //globals
@@ -95,6 +96,7 @@ public class MainLayout
         //add listener for new note
         pencilIcon.addClickListener(event ->
         {
+//            this.notesModel.setIsAdd(true);
             UI.getCurrent().navigate(ROUTE_NOTES_CONTROLLER_ADD);
         });
 
