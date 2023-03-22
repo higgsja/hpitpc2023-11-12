@@ -23,12 +23,12 @@ public class NotesAddEditControlsHL
     public final void doLayout()
     {
         this.buttonAddSave = new Button("Save");
-        this.buttonAddSave.setVisible(true);
+//        this.buttonAddSave.setVisible(true);
         this.buttonAddSave.setEnabled(false);   //until something changes
         this.buttonAddCancel = new Button("Cancel");
-        this.buttonAddCancel.setVisible(true);
+//        this.buttonAddCancel.setVisible(true);
         this.buttonAddArchive = new Button("Archive");
-        this.buttonAddArchive.setVisible(true);
+//        this.buttonAddArchive.setVisible(true);
         
         this.add(this.buttonAddSave, this.buttonAddCancel, this.buttonAddArchive);
     }

@@ -44,6 +44,7 @@ public class NotesMineVL
             this.notesModel.setNoteModel(event.getItem());
             this.notesModel.getBinder().setBean(this.notesModel.getNoteModel());
 
+//            this.notesModel.setIsAdd(false);
             UI.getCurrent().navigate(ROUTE_NOTES_CONTROLLER_EDIT);
         });
     }

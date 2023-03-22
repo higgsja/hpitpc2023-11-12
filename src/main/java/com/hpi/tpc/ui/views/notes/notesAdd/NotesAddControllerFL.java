@@ -1,6 +1,5 @@
 package com.hpi.tpc.ui.views.notes.notesAdd;
 
-import com.hpi.tpc.ui.views.notes.notesEdit.NotesEditFormVL;
 import com.hpi.tpc.app.security.*;
 import com.hpi.tpc.data.entities.*;
 import com.hpi.tpc.services.*;
@@ -77,12 +76,15 @@ public class NotesAddControllerFL
         });
     }
 
+    @Override
     public void beforeEnter(BeforeEnterEvent bee)
     {
         super.beforeEnter(bee);
 
         //log feature use
         this.serviceTPC.AppTracking("TPC:Notes:Add:Controller");
+        
+        this.notesModel.setIsAdd(true);
 
         //starter note template
         this.notesModel.setNoteModel(NoteModel.builder()
@@ -101,14 +103,14 @@ public class NotesAddControllerFL
         this.notesAddFormVL.getIPrice().setEnabled(true);
 
         //initial button settings upon entry
-        this.notesAddFormVL.getControlsHL().getButtonAddSave().setVisible(true);
+//        this.notesAddFormVL.getControlsHL().getButtonAddSave().setVisible(true);
         this.notesAddFormVL.getControlsHL().getButtonAddSave().setEnabled(false);
 
-        this.notesAddFormVL.getControlsHL().getButtonAddCancel().setVisible(true);
+//        this.notesAddFormVL.getControlsHL().getButtonAddCancel().setVisible(true);
         this.notesAddFormVL.getControlsHL().getButtonAddCancel().setEnabled(true);
 
-        this.notesAddFormVL.getControlsHL().getButtonAddArchive().setVisible(true);
-        this.notesAddFormVL.getControlsHL().getButtonAddArchive().setEnabled(false);
+        this.notesAddFormVL.getControlsHL().getButtonAddArchive().setVisible(false);
+//        this.notesAddFormVL.getControlsHL().getButtonAddArchive().setEnabled(false);
 
         //refresh gear (none)
         super.updateNavBarGear(null);

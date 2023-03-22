@@ -45,6 +45,7 @@ public class NotesAllVL
             this.notesModel.setNoteModel(event.getItem());
             this.getNotesModel().getBinder().setBean(this.notesModel.getNoteModel());
 
+//            this.notesModel.setIsAdd(false);
             UI.getCurrent().navigate(ROUTE_NOTES_CONTROLLER_EDIT);
         });
     }

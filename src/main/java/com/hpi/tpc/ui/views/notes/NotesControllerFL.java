@@ -68,6 +68,7 @@ public class NotesControllerFL
 
         notesAdd.addClickListener((ClickEvent<MenuItem> event) ->
         {
+//            this.notesModel.setIsAdd(true);
             UI.getCurrent().navigate(ROUTE_NOTES_CONTROLLER_ADD);
         });
 

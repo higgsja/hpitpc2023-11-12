@@ -34,6 +34,7 @@ public class NotesAddFormVL
     {
         super.doLayout();
         
-        this.getControlsHL().getButtonAddArchive().setEnabled(false);
+//        this.getControlsHL().getButtonAddArchive().setEnabled(false);
+//        this.getControlsHL().getButtonAddArchive().setVisible(false);
     }
 }

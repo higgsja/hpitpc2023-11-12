@@ -32,6 +32,7 @@ public class NotesModel
     private final HttpTdaClient httpTdaClient;
     @Getter private Quote quote;
     @Getter @Setter private Boolean isSave;
+    @Getter @Setter private Boolean isAdd;
 
     public NotesModel()
     {
@@ -49,6 +50,7 @@ public class NotesModel
 
         this.quote = null;
         this.isSave = false;
+        this.isAdd = false;
     }
 
     public Quote getTickerInfo(String ticker)
