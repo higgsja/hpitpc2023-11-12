@@ -30,6 +30,7 @@ public class LinesChart extends ApexChartsBuilder
     {
         builder = withChart(ChartBuilder.get()
             .withType(Type.LINE)
+            .withForeColor("#16E2F3")
             .withZoom(ZoomBuilder.get()
                 .withEnabled(true)
                 .withType(ZoomType.X)

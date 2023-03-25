@@ -75,6 +75,7 @@ public class TornadoChart extends ApexChartsBuilder
         withChart(ChartBuilder.get()
             .withType(Type.BAR)
             .withStackType(StackType.FULL)
+            .withForeColor("#16E2F3")
             .build())
             .withSeries(series)
 //          .withColors("#73D216", "#EF2929")
