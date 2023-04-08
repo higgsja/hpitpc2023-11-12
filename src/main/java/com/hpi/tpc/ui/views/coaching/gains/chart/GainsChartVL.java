@@ -1,6 +1,7 @@
 package com.hpi.tpc.ui.views.coaching.gains.chart;
 
 import com.github.appreciated.apexcharts.*;
+import com.github.appreciated.apexcharts.config.*;
 import com.hpi.tpc.charts.*;
 import com.hpi.tpc.data.entities.*;
 import com.hpi.tpc.ui.views.baseClass.*;
@@ -30,13 +31,14 @@ public class GainsChartVL
     private void construct()
     {
         this.getStyle().set("padding", "0px 0px 16px 5px");
-        
+
         this.add(this.addChart("PositionsClosed"));
     }
 
     public ApexCharts addChart(String dataTable)
     {
-        ApexChartsBuilder builder;
+        ApexCharts chart;
+        TornadoChart tornadoChart;
 
         this.gainsVLModel.getChartData(dataTable);
 
@@ -47,25 +49,35 @@ public class GainsChartVL
         {
             if (this.gainsVLModel.getSelectedChartType().equalsIgnoreCase("%"))
             {
-                builder = new TornadoChart(this.gainsVLModel.getChartPctMin(),
+                tornadoChart = new TornadoChart(this.gainsVLModel.getChartPctMin(),
                     this.gainsVLModel.getChartPctMax(),
                     GainModel.getCoordSeries(this.gainsVLModel.getGainsModels(),
                         this.gainsVLModel.getSelectedChartType()));
 
+//                builder = new TornadoChart(this.gainsVLModel.getChartPctMin(),
+//                    this.gainsVLModel.getChartPctMax(),
+//                    GainModel.getCoordSeries(this.gainsVLModel.getGainsModels(),
+//                        this.gainsVLModel.getSelectedChartType()));
             } else
             {
-                builder = new TornadoChart(this.gainsVLModel.getChartMin(), this.gainsVLModel.getChartMax(),
+                tornadoChart = new TornadoChart(this.gainsVLModel.getChartMin(), this.gainsVLModel.getChartMax(),
                     GainModel.getCoordSeries(this.gainsVLModel.getGainsModels(),
                         this.gainsVLModel.getSelectedChartType()));
+//                builder = new TornadoChart(this.gainsVLModel.getChartMin(), this.gainsVLModel.getChartMax(),
+//                    GainModel.getCoordSeries(this.gainsVLModel.getGainsModels(),
+//                        this.gainsVLModel.getSelectedChartType()));
             }
 
-            this.gainsVLModel.setChart(builder.build());
-            this.gainsVLModel.getChart().addClassName("coachingGainsChart");
-            this.gainsVLModel.getChart().setHeight("100%");
-
+//            this.gainsVLModel.setChart(builder.build());
+//            this.gainsVLModel.getChart().addClassName("coachingGainsChart");
+//            this.gainsVLModel.getChart().setHeight("100%");
             //remove the old chart
 //            this.removeAll();
-            return this.gainsVLModel.getChart();
+//            return this.gainsVLModel.getChart();
+            chart = tornadoChart.build();
+            chart.setHeight("100%");
+            chart.addClassName("coachingGainsChart");
+            return chart;
         } else
         {
             //remove the old chart

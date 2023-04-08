@@ -1,15 +1,19 @@
 package com.hpi.tpc.charts;
 
-import com.github.appreciated.apexcharts.ApexChartsBuilder;
+import com.github.appreciated.apexcharts.*;
 import com.github.appreciated.apexcharts.config.builder.*;
 import com.github.appreciated.apexcharts.config.chart.*;
+import com.github.appreciated.apexcharts.config.chart.builder.*;
+import com.github.appreciated.apexcharts.config.chart.zoom.*;
 import com.github.appreciated.apexcharts.config.plotoptions.builder.*;
+import com.github.appreciated.apexcharts.config.theme.*;
 import com.github.appreciated.apexcharts.config.xaxis.XAxisType;
 import com.github.appreciated.apexcharts.helper.Coordinate;
 import com.github.appreciated.apexcharts.helper.Series;
 import static java.lang.Math.*;
 
-public class TornadoChart extends ApexChartsBuilder
+public class TornadoChart
+    extends ApexChartsBuilder
 {
 
     public TornadoChart(Double chartMin, Double chartMax, Series<Coordinate>... series)
@@ -48,7 +52,8 @@ public class TornadoChart extends ApexChartsBuilder
             if (abs(chartMin) < abs(chartMax))
             {
                 chartMin = -chartMax;
-            }else{
+            } else
+            {
                 chartMax = -chartMin;
             }
 
@@ -72,13 +77,17 @@ public class TornadoChart extends ApexChartsBuilder
         {
         }
 
-        withChart(ChartBuilder.get()
+        this.withChart(ChartBuilder.get()
             .withType(Type.BAR)
             .withStackType(StackType.FULL)
-            .withForeColor("#16E2F3")
+            //            .withForeColor("#16E2F3")
+            .withZoom(ZoomBuilder.get()
+                .withEnabled(true)
+                .withType(ZoomType.X)
+                .build())
             .build())
             .withSeries(series)
-//          .withColors("#73D216", "#EF2929")
+            //          .withColors("#73D216", "#EF2929")
             .withXaxis(XAxisBuilder.get()
                 .withType(XAxisType.CATEGORIES)
                 .withMin(tmpChartMin)
@@ -89,8 +98,14 @@ public class TornadoChart extends ApexChartsBuilder
                     .withHorizontal(true)
                     .build())
                 .build())
+            .withTheme(ThemeBuilder.get()
+                .withMode(Mode.DARK)
+                .build())
             .withDataLabels(DataLabelsBuilder.get()
                 .withEnabled(false)
-                .build());
+                .build())
+            .build();
+
+//        this.withChart(ChartBuilder.get().withHeight("100%").build());
     }
 }

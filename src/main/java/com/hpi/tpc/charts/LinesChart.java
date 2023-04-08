@@ -8,6 +8,7 @@ import com.github.appreciated.apexcharts.config.chart.zoom.*;
 import com.github.appreciated.apexcharts.config.legend.*;
 import com.github.appreciated.apexcharts.config.responsive.builder.*;
 import com.github.appreciated.apexcharts.config.stroke.*;
+import com.github.appreciated.apexcharts.config.theme.*;
 import com.github.appreciated.apexcharts.config.xaxis.XAxisType;
 import com.github.appreciated.apexcharts.helper.Coordinate;
 import com.github.appreciated.apexcharts.helper.Series;
@@ -30,7 +31,7 @@ public class LinesChart extends ApexChartsBuilder
     {
         builder = withChart(ChartBuilder.get()
             .withType(Type.LINE)
-            .withForeColor("#16E2F3")
+//            .withForeColor("#16E2F3")
             .withZoom(ZoomBuilder.get()
                 .withEnabled(true)
                 .withType(ZoomType.X)
@@ -49,6 +50,9 @@ public class LinesChart extends ApexChartsBuilder
                 .build())
             .withLegend(LegendBuilder.get()
                 .withPosition(Position.BOTTOM)
+                .build())
+            .withTheme(ThemeBuilder.get()
+                .withMode(Mode.DARK)
                 .build())
             .withResponsive(ResponsiveBuilder.get()
                 .withBreakpoint(600.0)
