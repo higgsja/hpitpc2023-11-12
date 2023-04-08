@@ -1,7 +1,7 @@
 package com.hpi.tpc.ui.views.coaching.gains;
 
-import com.github.appreciated.apexcharts.*;
 import com.hpi.tpc.app.security.*;
+import com.hpi.tpc.charts.*;
 import com.hpi.tpc.data.entities.*;
 import com.hpi.tpc.ui.views.baseClass.*;
 import com.vaadin.flow.spring.annotation.*;
@@ -45,7 +45,7 @@ public class GainsVLModel
     private Double chartPctMax;
     private Double chartMax;
 
-    private ApexCharts chart;
+//    private TornadoChart chart;
 
     public GainsVLModel()
     {
